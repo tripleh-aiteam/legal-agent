@@ -45,3 +45,6 @@ tessdata/
 
 # Compiled docs
 *.docx
+
+# ngrok
+ngrok.exe
