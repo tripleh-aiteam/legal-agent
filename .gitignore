@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ruff
+.ruff_cache/
+
+# Node
+web/node_modules/
+web/.next/
+web/out/
+
+# Docker
+*.log
+
+# Tesseract data (large binary)
+tessdata/
+
+# Screenshots
+*.png
+
+# Claude
+.claude/
+
+# Compiled docs
+*.docx

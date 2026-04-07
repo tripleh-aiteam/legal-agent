@@ -1,0 +1,100 @@
+[
+  {
+    "contract_type": "employment",
+    "clause_type": "전문",
+    "standard_text": "○○○(이하 '사용자'라 한다)과 ○○○(이하 '근로자'라 한다)은 다음과 같이 근로계약을 체결한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "근로계약기간",
+    "standard_text": "제1조 (근로계약기간) ① 근로계약기간은 ○○년 ○○월 ○○일부터 ○○년 ○○월 ○○일까지로 한다. (기간의 정함이 없는 경우: 근로계약기간은 정함이 없는 것으로 한다.) ② 수습기간은 ○개월로 하며, 수습기간 중의 근로조건은 본 계약에 의한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "근무장소및업무",
+    "standard_text": "제2조 (근무장소 및 업무내용) ① 근무장소: ○○ ② 업무내용: ○○ ③ 사용자는 경영상 필요에 의하여 근로자의 근무장소 또는 업무를 변경할 수 있으며, 근로자는 정당한 사유 없이 이를 거부할 수 없다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "근로시간",
+    "standard_text": "제3조 (근로시간) ① 1일 근로시간은 휴게시간을 제외하고 8시간으로 한다. (시업시각: ○○:○○, 종업시각: ○○:○○) ② 1주 근로시간은 휴게시간을 제외하고 40시간으로 한다. ③ 휴게시간은 ○○:○○부터 ○○:○○까지 ○시간으로 한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "임금",
+    "standard_text": "제4조 (임금) ① 기본급: 월 금 ○○원 ② 상여금: ○○ ③ 기타 수당(시간외·야간·휴일근로수당 등): 「근로기준법」에서 정하는 바에 따라 지급 ④ 임금 지급일: 매월 ○일 (지급일이 휴일인 경우 전일 지급) ⑤ 지급방법: 근로자 명의 예금통장에 입금",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "휴일휴가",
+    "standard_text": "제5조 (휴일 및 휴가) ① 유급휴일: 1주에 평균 1회 이상의 유급휴일(주휴일)을 부여한다. ② 연차유급휴가: 「근로기준법」 제60조에 의한 연차유급휴가를 부여한다. ③ 근로자의 날(5월 1일)은 유급휴일로 한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "사회보험",
+    "standard_text": "제6조 (사회보험) 사용자는 관련 법령에 따라 근로자에 대하여 국민연금, 건강보험, 고용보험, 산업재해보상보험에 가입한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "퇴직급여",
+    "standard_text": "제7조 (퇴직급여) 사용자는 「근로자퇴직급여 보장법」에 따라 1년 이상 근무한 근로자에게 퇴직급여를 지급한다. 퇴직급여 제도의 종류: □ 퇴직금 □ 확정급여형 퇴직연금(DB) □ 확정기여형 퇴직연금(DC)",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "비밀유지",
+    "standard_text": "제8조 (비밀유지) ① 근로자는 재직 중 및 퇴직 후에도 업무상 알게 된 사용자의 영업비밀 및 경영상 비밀을 타인에게 누설하거나 자기 또는 제3자를 위하여 이용하여서는 아니 된다. ② '영업비밀'이란 공공연히 알려져 있지 아니하고 독립된 경제적 가치를 가지며, 비밀로 관리되는 생산방법, 판매방법, 기타 영업활동에 유용한 기술상 또는 경영상의 정보를 말한다.",
+    "is_mandatory": false,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "경업금지",
+    "standard_text": "제9조 (경업금지) ① 근로자는 퇴직 후 ○년간 사용자와 경쟁관계에 있는 업체에 취업하거나 동종의 사업을 영위하지 아니한다. ② 전항의 경업금지 의무의 대상 업종 및 지역적 범위는 별도 합의서에서 정한다. ③ 사용자는 경업금지 의무에 대한 합리적인 대가를 근로자에게 지급한다.",
+    "is_mandatory": false,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "징계",
+    "standard_text": "제10조 (복무 및 징계) ① 근로자는 사용자의 취업규칙 및 제반 규정을 성실히 준수하여야 한다. ② 근로자가 취업규칙 등을 위반한 경우, 사용자는 취업규칙에서 정한 절차에 따라 징계할 수 있다.",
+    "is_mandatory": false,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "해고",
+    "standard_text": "제11조 (해고) ① 사용자는 근로자에게 정당한 이유가 있는 경우에 한하여 해고할 수 있다. ② 사용자는 근로자를 해고하려면 해고 사유와 해고 시기를 서면으로 통지하여야 한다. ③ 사용자는 근로자를 해고하려면 적어도 30일 전에 예고하여야 하며, 30일 전에 예고하지 아니하였을 때에는 30일분 이상의 통상임금을 지급하여야 한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "발명보상",
+    "standard_text": "제○조 (직무발명) ① 근로자가 업무 과정에서 발명한 직무발명에 대한 권리는 「발명진흥법」에 따라 사용자에게 승계된다. ② 사용자는 근로자의 직무발명에 대하여 정당한 보상을 하여야 한다.",
+    "is_mandatory": false,
+    "industry": "IT"
+  },
+  {
+    "contract_type": "employment",
+    "clause_type": "일반조항",
+    "standard_text": "제12조 (일반조항) ① 본 계약에 정하지 아니한 사항은 「근로기준법」 등 관련 법령, 취업규칙 및 상관례에 따른다. ② 본 계약은 2통을 작성하여 사용자와 근로자가 각 1통씩 보관한다.",
+    "is_mandatory": true,
+    "industry": null
+  }
+]

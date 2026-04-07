@@ -1,0 +1,121 @@
+[
+  {
+    "contract_type": "service_contract",
+    "clause_type": "전문",
+    "standard_text": "○○○(이하 '갑'이라 한다)과 ○○○(이하 '을'이라 한다)은 아래의 용역 업무에 관하여 다음과 같이 계약을 체결한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "목적",
+    "standard_text": "제1조 (목적) 본 계약은 갑이 을에게 의뢰하는 ○○ 용역 업무의 수행에 관하여 갑과 을 사이의 권리·의무 관계를 명확히 하는 것을 목적으로 한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "용역범위",
+    "standard_text": "제2조 (용역의 범위) ① 을이 수행할 용역의 구체적인 내용은 별첨 '용역 범위 명세서'에 따른다. ② 갑과 을은 상호 협의하여 용역의 범위를 변경할 수 있으며, 변경 시 서면으로 합의하여야 한다. ③ 용역 범위의 변경으로 계약금액 또는 기간의 조정이 필요한 경우, 갑과 을은 성실히 협의한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "계약기간",
+    "standard_text": "제3조 (계약기간) ① 본 계약의 기간은 ○○년 ○○월 ○○일부터 ○○년 ○○월 ○○일까지로 한다. ② 갑과 을의 서면 합의에 의하여 계약기간을 연장할 수 있다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "대금지급",
+    "standard_text": "제4조 (계약대금 및 지급) ① 갑은 을에게 용역 대금으로 금 ○○원(부가가치세 별도)을 지급한다. ② 대금의 지급은 다음 각 호에 따른다. 1. 선금: 계약 체결 후 7일 이내에 계약금액의 30% 2. 중도금: 중간 산출물 검수 완료 후 30일 이내에 계약금액의 40% 3. 잔금: 최종 산출물 검수 완료 후 30일 이내에 계약금액의 30% ③ 갑이 정당한 사유 없이 대금 지급을 지체하는 경우, 지체일수에 대하여 연 5%의 지연이자를 가산하여 지급한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "납품및검수",
+    "standard_text": "제5조 (납품 및 검수) ① 을은 용역 범위에서 정한 산출물을 약정된 기한까지 갑에게 납품하여야 한다. ② 갑은 산출물 수령 후 14일 이내에 검수를 완료하고, 그 결과를 을에게 통보한다. ③ 검수 결과 미비한 사항이 있는 경우, 을은 갑의 요청에 따라 14일 이내에 보완·수정하여 재납품한다. ④ 갑이 검수 기간 내에 검수 결과를 통보하지 아니한 경우, 검수에 합격한 것으로 본다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "하자보수",
+    "standard_text": "제6조 (하자보수) ① 갑은 최종 검수 완료일로부터 6개월 이내에 산출물의 하자를 발견한 경우, 을에게 무상 보수를 청구할 수 있다. ② 을은 갑의 하자보수 요청을 받은 날로부터 14일 이내에 보수를 완료하여야 한다. ③ 하자보수의 범위는 을의 귀책사유로 인한 결함에 한한다.",
+    "is_mandatory": false,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "지식재산권",
+    "standard_text": "제7조 (지식재산권) ① 을이 본 계약의 이행 과정에서 새로이 창작한 결과물에 대한 저작권 등 지식재산권은 대금 완납 시 갑에게 귀속된다. ② 을이 본 계약 체결 이전에 보유하고 있던 지식재산권(기존 저작물, 라이브러리, 프레임워크 등)은 을에게 유보되며, 갑은 본 계약의 목적 범위 내에서 이를 사용할 수 있는 비독점적·영구적 라이선스를 부여받는다. ③ 을은 제3자의 지식재산권을 침해하지 않는 범위에서 용역을 수행하여야 하며, 제3자의 권리 침해에 대한 책임은 을이 부담한다.",
+    "is_mandatory": false,
+    "industry": "IT"
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "비밀유지",
+    "standard_text": "제8조 (비밀유지) ① 갑과 을은 본 계약의 이행 과정에서 알게 된 상대방의 기술상·경영상의 정보를 본 계약기간 중은 물론 계약 종료 후 3년간 제3자에게 누설하거나 본 계약 이외의 목적으로 사용하여서는 아니 된다. ② 다만, 다음 각 호의 어느 하나에 해당하는 경우에는 그러하지 아니하다. 1. 공지의 사실이거나 이미 알려진 정보 2. 법률 또는 법원의 명령에 의하여 공개가 요구되는 경우 3. 상대방의 사전 서면 동의를 받은 경우",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "손해배상",
+    "standard_text": "제9조 (손해배상) ① 갑 또는 을이 본 계약상의 의무를 위반하여 상대방에게 손해를 끼친 경우, 그 손해를 배상하여야 한다. ② 손해배상의 총액은 본 계약에서 정한 계약금액을 한도로 하며, 직접적이고 통상적인 손해에 한한다. ③ 다만, 고의 또는 중대한 과실에 의한 손해, 비밀유지의무 위반으로 인한 손해에 대해서는 전항의 제한을 적용하지 아니한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "해지해제",
+    "standard_text": "제10조 (계약의 해지·해제) ① 갑 또는 을은 상대방이 다음 각 호의 어느 하나에 해당하는 경우, 서면 통지로 본 계약을 해지 또는 해제할 수 있다. 1. 본 계약의 중대한 조항을 위반하고, 30일간의 시정 기간 내에 이를 시정하지 아니한 경우 2. 파산, 회생절차 개시, 화의, 영업의 전부 또는 중요한 일부의 양도 등이 발생한 경우 ② 갑 또는 을은 30일 전 서면 통지로 특별한 사유 없이 본 계약을 해지할 수 있다. 이 경우 갑은 이미 완성된 부분에 해당하는 대금을 을에게 지급한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "불가항력",
+    "standard_text": "제11조 (불가항력) ① 천재지변, 전쟁, 폭동, 법률의 변경, 정부의 규제 등 어느 당사자의 합리적 통제 범위를 벗어난 사유(이하 '불가항력')로 인하여 본 계약상의 의무를 이행할 수 없는 경우, 그 이행 지체에 대하여 책임을 지지 아니한다. ② 불가항력 사유가 30일 이상 지속되는 경우, 어느 당사자든 서면 통지로 본 계약을 해지할 수 있다.",
+    "is_mandatory": false,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "재위탁금지",
+    "standard_text": "제12조 (재위탁 금지) ① 을은 갑의 사전 서면 동의 없이 본 계약에 따른 용역의 전부 또는 일부를 제3자에게 재위탁할 수 없다. ② 갑의 동의를 받아 재위탁하는 경우에도, 을은 재위탁 업체의 업무 수행에 대하여 갑에게 전적으로 책임을 진다.",
+    "is_mandatory": false,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "분쟁해결",
+    "standard_text": "제13조 (분쟁해결) ① 본 계약과 관련하여 발생하는 모든 분쟁은 당사자 간의 상호 협의에 의하여 해결하도록 한다. ② 협의가 이루어지지 아니할 경우 대한상사중재원의 중재 또는 관할법원의 판결에 의한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "일반조항",
+    "standard_text": "제14조 (일반조항) ① 본 계약은 당사자 쌍방의 서면 합의에 의해서만 변경될 수 있다. ② 본 계약에 정하지 아니한 사항은 상관례 및 민법, 상법 등 관련 법령에 따른다. ③ 본 계약은 2통을 작성하여 갑과 을이 각 1통씩 보관한다.",
+    "is_mandatory": true,
+    "industry": null
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "소스코드관리",
+    "standard_text": "제○조 (소스코드 관리) ① 을은 개발 과정에서 작성하는 소스코드를 갑이 지정하는 형상관리 시스템(Git 등)에 관리하여야 한다. ② 을은 최종 납품 시 완성된 소스코드 일체와 빌드·배포에 필요한 문서를 갑에게 인도한다. ③ 갑은 을이 제공한 소스코드를 유지보수 목적으로 자유롭게 수정·사용할 수 있다.",
+    "is_mandatory": false,
+    "industry": "IT"
+  },
+  {
+    "contract_type": "service_contract",
+    "clause_type": "개인정보보호",
+    "standard_text": "제○조 (개인정보 보호) ① 을은 용역 수행 과정에서 갑의 고객 또는 임직원의 개인정보를 취급하는 경우, 「개인정보 보호법」 등 관련 법령을 준수하여야 한다. ② 을은 개인정보의 안전성 확보를 위하여 기술적·관리적 보호조치를 이행하여야 하며, 개인정보 유출 사고 발생 시 즉시 갑에게 통지하고 필요한 조치를 취하여야 한다. ③ 용역 완료 후 을은 수집한 개인정보를 지체 없이 파기하고, 그 사실을 갑에게 서면으로 통보한다.",
+    "is_mandatory": false,
+    "industry": null
+  }
+]
