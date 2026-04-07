@@ -13,7 +13,8 @@ import type {
   ReviewResponse,
 } from "@/types/api";
 
-const BASE = "/api/v1";
+const API_ORIGIN = process.env.NEXT_PUBLIC_API_URL || "";
+const BASE = `${API_ORIGIN}/api/v1`;
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${url}`, {
