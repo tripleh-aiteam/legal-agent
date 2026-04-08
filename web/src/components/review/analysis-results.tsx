@@ -11,7 +11,16 @@ import {
   Download,
   FileText,
   Loader2,
+  Tag,
 } from "lucide-react";
+
+const DOC_TYPE_LABELS: Record<string, string> = {
+  sales: "부동산 매매 계약서",
+  lease: "임대차 계약서",
+  service_contract: "용역 계약서",
+  nda: "비밀유지 계약서(NDA)",
+  employment: "근로 계약서",
+};
 
 function RiskGauge({ score }: { score: number }) {
   const pct = (score / 10) * 100;
@@ -75,6 +84,15 @@ export function AnalysisResults({
       {/* Summary */}
       <div className="rounded-xl border bg-card p-6 space-y-4">
         <RiskGauge score={result.overall_risk_score} />
+        {result.doc_type && (
+          <div className="flex items-center gap-1.5 text-sm">
+            <Tag className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="text-muted-foreground">AI 분류:</span>
+            <span className="font-medium">
+              {result.doc_type_label || DOC_TYPE_LABELS[result.doc_type] || result.doc_type}
+            </span>
+          </div>
+        )}
         <p className="text-sm text-muted-foreground">{result.risk_summary}</p>
 
         <div className="flex gap-4 text-sm">

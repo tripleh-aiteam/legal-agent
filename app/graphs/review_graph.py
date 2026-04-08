@@ -1,7 +1,7 @@
 """Review(분석) 서브그래프 — LangGraph StateGraph 정의.
 
 파이프라인:
-    SecurityScan → Parse → [Analyzer + RAG 병렬] → Merge → Validate → 재시도(max 2)
+    SecurityScan → Parse → RAG → Analyzer(RAG 근거 포함) → Merge → Validate → 재시도(max 2)
 """
 
 from langgraph.graph import END, START, StateGraph
@@ -44,8 +44,8 @@ def build_review_graph() -> StateGraph:
     # ── 노드 등록 ──
     graph.add_node("security_scan", security_scan)
     graph.add_node("parse_document", parse_document)
-    graph.add_node("analyze_clauses", analyze_clauses)
     graph.add_node("rag_search", rag_search)
+    graph.add_node("analyze_clauses", analyze_clauses)
     graph.add_node("merge_results", merge_results)
     graph.add_node("validate", validate)
     graph.add_node("retry_analyze", retry_with_feedback)
@@ -65,13 +65,12 @@ def build_review_graph() -> StateGraph:
         },
     )
 
-    # 파싱 → Analyzer + RAG 병렬 실행
-    graph.add_edge("parse_document", "analyze_clauses")
+    # 파싱 → RAG 검색 → Analyzer (RAG 결과를 근거로 분석)
     graph.add_edge("parse_document", "rag_search")
+    graph.add_edge("rag_search", "analyze_clauses")
 
-    # Analyzer, RAG → 결과 병합 (둘 다 완료되면 merge)
+    # Analyzer → 결과 병합
     graph.add_edge("analyze_clauses", "merge_results")
-    graph.add_edge("rag_search", "merge_results")
 
     # 병합 → 검증
     graph.add_edge("merge_results", "validate")

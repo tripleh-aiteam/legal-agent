@@ -46,6 +46,8 @@ export interface ReviewResponse {
 export interface AnalysisResult {
   document_id: string;
   analysis_type: string;
+  doc_type: string | null;
+  doc_type_label: string | null;
   overall_risk_score: number;
   risk_summary: string;
   confidence: number;
@@ -55,17 +57,35 @@ export interface AnalysisResult {
   processing_time_ms: number;
 }
 
+export interface RagLawRef {
+  law_name: string;
+  article_number: string;
+  article_title: string;
+  content: string;
+}
+
+export interface RagPrecedentRef {
+  case_number: string;
+  court: string;
+  title: string;
+  summary: string;
+}
+
 export interface RiskFinding {
   severity: "critical" | "high" | "medium" | "low" | "info";
   category: string;
   title: string;
   description: string;
+  reasoning: string | null;
   original_text: string;
   suggested_text: string | null;
   suggestion_reason: string | null;
   related_law: string | null;
   precedent_refs: string[];
   confidence_score: number;
+  rag_verified: boolean | null;
+  rag_law_refs: RagLawRef[] | null;
+  rag_precedent_refs: RagPrecedentRef[] | null;
 }
 
 export interface ValidationSummary {

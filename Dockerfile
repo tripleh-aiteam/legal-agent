@@ -7,13 +7,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Python 의존성
+# Python 의존성 (캐시 활용을 위해 먼저 설치)
 COPY pyproject.toml .
-RUN pip install --no-cache-dir -e ".[dev]"
+COPY app/ app/
+RUN pip install --no-cache-dir .
 
-# 소스 코드
+# 나머지 소스 코드
 COPY . .
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}

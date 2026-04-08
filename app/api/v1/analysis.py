@@ -60,21 +60,12 @@ async def review_document(request: ReviewRequest):
     if response_data:
         elapsed = int((time.time() - start_time) * 1000)
         response_data["processing_time_ms"] = elapsed
+        response_data["doc_type"] = result.get("doc_type")
+        response_data["doc_type_label"] = result.get("doc_type_label")
         # findings가 RiskFinding 스키마에 맞도록 필수 필드 보충
         sanitized_findings = []
         for f in response_data.get("findings", []):
-            sanitized_findings.append({
-                "severity": f.get("severity", "info"),
-                "category": f.get("category", "unknown"),
-                "title": f.get("title", ""),
-                "description": f.get("description", ""),
-                "original_text": f.get("original_text", ""),
-                "suggested_text": f.get("suggested_text"),
-                "suggestion_reason": f.get("suggestion_reason"),
-                "related_law": f.get("related_law"),
-                "precedent_refs": f.get("precedent_refs", []),
-                "confidence_score": f.get("confidence_score", 0.0),
-            })
+            sanitized_findings.append(_sanitize_finding(f))
         response_data["findings"] = sanitized_findings
         return ReviewResponse(status="completed", analysis=response_data)
 
@@ -82,6 +73,8 @@ async def review_document(request: ReviewRequest):
     elapsed = int((time.time() - start_time) * 1000)
     partial = {
         "document_id": str(request.document_id),
+        "doc_type": result.get("doc_type"),
+        "doc_type_label": result.get("doc_type_label"),
         "overall_risk_score": result.get("overall_risk_score", 0.0),
         "confidence": result.get("confidence", 0.0),
         "risk_summary": result.get("risk_summary", "분석이 완료되었으나 검증을 통과하지 못했습니다."),
@@ -92,16 +85,25 @@ async def review_document(request: ReviewRequest):
     }
     # merged_findings가 있으면 포함
     for f in result.get("merged_findings", []):
-        partial["findings"].append({
-            "severity": f.get("severity", "info"),
-            "category": f.get("category", "unknown"),
-            "title": f.get("title", ""),
-            "description": f.get("description", ""),
-            "original_text": f.get("original_text", ""),
-            "suggested_text": f.get("suggested_text"),
-            "suggestion_reason": f.get("suggestion_reason"),
-            "related_law": f.get("related_law"),
-            "precedent_refs": f.get("precedent_refs", []),
-            "confidence_score": f.get("confidence_score", 0.0),
-        })
+        partial["findings"].append(_sanitize_finding(f))
     return ReviewResponse(status="completed", analysis=partial)
+
+
+def _sanitize_finding(f: dict) -> dict:
+    """finding 딕셔너리를 프론트엔드 스키마에 맞게 정리."""
+    return {
+        "severity": f.get("severity", "info"),
+        "category": f.get("category", "unknown"),
+        "title": f.get("title", ""),
+        "description": f.get("description", ""),
+        "reasoning": f.get("reasoning"),
+        "original_text": f.get("original_text", ""),
+        "suggested_text": f.get("suggested_text"),
+        "suggestion_reason": f.get("suggestion_reason"),
+        "related_law": f.get("related_law"),
+        "precedent_refs": f.get("precedent_refs", []),
+        "confidence_score": f.get("confidence_score", 0.0),
+        "rag_verified": f.get("rag_verified"),
+        "rag_law_refs": f.get("rag_law_refs"),
+        "rag_precedent_refs": f.get("rag_precedent_refs"),
+    }

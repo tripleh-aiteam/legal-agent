@@ -24,7 +24,8 @@ class ReviewState(TypedDict, total=False):
 
     # ── 문서 파싱 ──
     clauses: list[dict[str, Any]]  # 분리된 조항 목록
-    doc_type: str | None  # "service_contract" | "nda" | "employment" | "lease" 등
+    doc_type: str | None  # LLM 분류 결과 코드 (예: "sales", "lease", "franchise" 등)
+    doc_type_label: str | None  # 한국어 레이블 (예: "부동산 매매 계약서")
     parties: list[str]  # 당사자 목록
     language: str  # "ko" | "en"
 

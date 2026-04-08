@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { uploadDocument, adviseMessage } from "@/lib/api";
 import type { AdviseResponse, DocumentUploadResponse } from "@/types/api";
 
@@ -10,6 +10,8 @@ export interface ChatMessage {
   advice?: AdviseResponse | null;
 }
 
+const STORAGE_KEY = "advise_state";
+
 export function useAdvise() {
   const [documentId, setDocumentId] = useState<string | null>(null);
   const [uploadResult, setUploadResult] = useState<DocumentUploadResponse | null>(null);
@@ -18,6 +20,30 @@ export function useAdvise() {
   const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // 마운트 시 sessionStorage에서 복원
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (saved.documentId) setDocumentId(saved.documentId);
+      if (saved.uploadResult) setUploadResult(saved.uploadResult);
+      if (saved.sessionId) setSessionId(saved.sessionId);
+      if (saved.messages) setMessages(saved.messages);
+      if (saved.error) setError(saved.error);
+    } catch {}
+  }, []);
+
+  // 상태 변경 시 sessionStorage에 저장
+  useEffect(() => {
+    if (isUploading || isLoading || !documentId) return;
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        documentId, uploadResult, sessionId, messages, error,
+      }));
+    } catch {}
+  }, [documentId, uploadResult, sessionId, messages, error, isUploading, isLoading]);
 
   const upload = useCallback(async (file: File) => {
     try {
@@ -76,6 +102,7 @@ export function useAdvise() {
     setSessionId(null);
     setMessages([]);
     setError(null);
+    try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
   }, []);
 
   return {

@@ -60,6 +60,8 @@ async def upload_document(
         parse_result = extract_text_from_docx_bytes(contents)
 
     raw_text = parse_result.get("text", "")
+    # 서로게이트 문자 제거 (PDF 파서에서 깨진 한글이 포함될 수 있음)
+    raw_text = raw_text.encode("utf-8", errors="surrogatepass").decode("utf-8", errors="replace")
     page_count = parse_result.get("page_count", 0)
 
     if not raw_text.strip():

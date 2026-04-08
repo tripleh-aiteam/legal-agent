@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { draftStart, draftContinue, draftGenerate } from "@/lib/api";
 import type { DraftResponse, InterviewQuestion } from "@/types/api";
 
 type DraftStage = "idle" | "interviewing" | "generating" | "completed" | "error";
+
+const STORAGE_KEY = "draft_state";
 
 export function useDraft() {
   const [stage, setStage] = useState<DraftStage>("idle");
@@ -16,6 +18,34 @@ export function useDraft() {
   const [outputPath, setOutputPath] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // 마운트 시 sessionStorage에서 복원
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (saved.stage) setStage(saved.stage);
+      if (saved.sessionId) setSessionId(saved.sessionId);
+      if (saved.currentQuestion) setCurrentQuestion(saved.currentQuestion);
+      if (saved.progress) setProgress(saved.progress);
+      if (saved.contractText) setContractText(saved.contractText);
+      if (saved.reviewSummary) setReviewSummary(saved.reviewSummary);
+      if (saved.outputPath) setOutputPath(saved.outputPath);
+      if (saved.error) setError(saved.error);
+    } catch {}
+  }, []);
+
+  // 상태 변경 시 sessionStorage에 저장
+  useEffect(() => {
+    if (isLoading || stage === "idle") return;
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        stage, sessionId, currentQuestion, progress,
+        contractText, reviewSummary, outputPath, error,
+      }));
+    } catch {}
+  }, [stage, sessionId, currentQuestion, progress, contractText, reviewSummary, outputPath, error, isLoading]);
 
   const handleResponse = useCallback((res: DraftResponse) => {
     setSessionId(res.session_id);
@@ -91,6 +121,7 @@ export function useDraft() {
     setReviewSummary(null);
     setOutputPath(null);
     setError(null);
+    try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
   }, []);
 
   return {

@@ -1,7 +1,7 @@
 # Legal Review Agent — Advanced Architecture
 
 > 단순 LLM 호출이 아닌, 스스로 검증하고 보강하는 멀티 에이전트 시스템
-> **v2.0** — Drafter Agent, Advisor Agent 추가
+> **v3.0** — RAG-First Architecture, AI 사고과정 투명화, LLM 기반 문서분류
 
 ---
 
@@ -118,13 +118,15 @@ class Orchestrator:
 
         for attempt in range(self.MAX_RETRIES + 1):
 
-            # Analyzer + RAG 병렬 실행
-            analyzer_result, rag_result = await asyncio.gather(
-                self.analyzer_agent.analyze(request, pipeline),
-                self.rag_agent.retrieve(request, pipeline),
+            # RAG 먼저 실행 → 결과를 Analyzer에 전달 (RAG-First)
+            rag_result = await self.rag_agent.retrieve(request, pipeline)
+
+            # Analyzer가 RAG 근거를 참고하여 분석
+            analyzer_result = await self.analyzer_agent.analyze(
+                request, pipeline, rag_context=rag_result,
             )
 
-            # RAG 결과를 Analyzer 결과에 병합 (근거 보강)
+            # Merger에서 RAG 매칭 검증 + confidence 보정
             enriched_result = self._merge_results(analyzer_result, rag_result)
 
             # ── Step 3: 검증 ──
@@ -175,22 +177,26 @@ class AnalyzerAgent:
        - 해당 조항만 다시 분석 (전체 재분석 X → 비용 절감)
     """
 
-    async def analyze(self, request, pipeline) -> AnalysisResult:
+    async def analyze(self, request, pipeline, rag_context=None) -> AnalysisResult:
 
         document = request.document
         clauses = request.clauses
 
-        # ── 재시도인 경우: 피드백 반영 ──
-        if request.feedback:
-            return await self._retry_with_feedback(request)
+        # ── RAG 결과를 참고자료 텍스트로 변환 ──
+        rag_text = self._build_rag_context(rag_context)  # 법령/판례/표준조항
 
-        # ── 1단계: 조항별 분석 (병렬) ──
+        # ── 재시도인 경우: 문제 조항만 피드백 반영 재분석 ──
+        if request.feedback:
+            return await self._retry_with_feedback(request, rag_text)
+
+        # ── 1단계: 조항별 분석 (병렬, RAG 근거 포함) ──
         clause_tasks = []
         for clause in clauses:
             task = self._analyze_single_clause(
                 clause=clause,
-                full_context=document.raw_text,  # 전체 맥락 참고
+                full_context=document.raw_text,
                 perspective=request.perspective,
+                rag_context=rag_text,  # ★ RAG 근거를 각 조항 분석에 전달
             )
             clause_tasks.append(task)
 
@@ -206,16 +212,18 @@ class AnalyzerAgent:
         # ── 3단계: 결과 통합 ──
         return self._compile_results(clause_results, doc_level)
 
-    async def _analyze_single_clause(self, clause, full_context, perspective):
+    async def _analyze_single_clause(self, clause, full_context, perspective, rag_context=""):
         """
-        개별 조항 분석.
+        개별 조항 분석 (RAG 근거 포함).
 
         프롬프트 구조:
-        - System: 법률 분석가 역할 + 출력 JSON 스키마
+        - System: 법률 분석가 역할 + 출력 JSON 스키마 + RAG 활용 규칙
         - User: [전체 계약서 요약] + [이 조항 원문] + [관점 지시]
+               + [참고 법률 자료 — DB에서 검색된 실제 법령/판례/표준조항]
 
-        중요: 전체 맥락을 요약해서 같이 넘긴다.
-        "제3조에 따라"가 나오면 제3조가 뭔지 알아야 하니까.
+        ★ v3 변경: RAG 결과를 컨텍스트로 제공하여 근거 기반 분석
+        ★ reasoning 필드에 AI 판단 근거를 단계별로 기록
+        ★ 참고 자료에 없는 법률 조문은 인용 금지
         """
         pass
 
@@ -239,14 +247,17 @@ class AnalyzerAgent:
         """
         pass
 
-    async def _retry_with_feedback(self, request):
+    async def _retry_with_feedback(self, request, rag_context=""):
         """
         Validator 피드백을 반영한 부분 재분석.
 
-        전체를 다시 하지 않고, 문제가 있던 조항만 재분석한다.
-        피드백 내용을 프롬프트에 포함:
-        "이전 분석에서 다음 오류가 발견되었습니다: [피드백].
-         해당 부분을 수정하여 다시 분석해주세요."
+        ★ v3 변경: 전체 재분석이 아닌 문제 조항만 재분석
+        1. feedback의 finding_index → merged_findings에서 clause_number 추출
+        2. 해당 clause_number만 재분석, 나머지는 기존 결과 유지
+        3. 폴백: clause_number를 못 찾으면 detail 텍스트에서 매칭 시도
+        4. 최후 폴백: 전체 재분석
+
+        피드백 내용 + RAG 근거를 프롬프트에 포함.
         """
         pass
 ```
@@ -853,47 +864,51 @@ $$;
 │   → result: CLEAN ✅
 │
 ▼
-[3] Document Parser: 텍스트 추출 & 조항 분리
+[3] Document Parser: 텍스트 추출 & 조항 분리 + LLM 문서유형 분류
 │   → 23개 조항 식별
 │   → 당사자: 주식회사 AAA(갑), 주식회사 BBB(을)
+│   → doc_type: "service_contract" (LLM 분류, 폴백: 키워드)
+│   → doc_type_label: "용역 계약서"
 │
 ▼
-[4] 병렬 실행:
-│
-├─→ [4a] Analyzer Agent: 조항별 위험 분석
-│   │   → 제8조: critical (무제한 손해배상)
-│   │   → 제12조: high (일방적 해지권)
-│   │   → 제15조: medium (과도한 경업금지)
-│   │   → overall_risk_score: 7.2
-│   │
-│   └─→ 수정안 생성 (각 위험 조항별)
-│
-└─→ [4b] RAG Agent: 법률 근거 검색
-    │   → 민법 제393조 (손해배상의 범위) 조회
-    │   → 약관규제법 제8조 (손해배상액 예정) 조회
-    │   → 2023다54321 판례 (배상한도 미설정 무효) 조회
-    │   → 용역계약 표준 손해배상 조항 조회
-    │
-    └─→ Reranking → Top-K 선별
+[4] RAG Agent: 법률 근거 선검색 (RAG-First)
+│   → 민법 제393조 (손해배상의 범위) 조회
+│   → 약관규제법 제8조 (손해배상액 예정) 조회
+│   → 2023다54321 판례 (배상한도 미설정 무효) 조회
+│   → 용역계약 표준 손해배상 조항 조회
+│   → Reranking → Top-K 선별
 │
 ▼
-[5] Orchestrator: 결과 병합
-│   → Analyzer 결과에 RAG 근거 연결
-│   → 제8조 위험 → 근거: 민법 제393조 + 2023다54321 판례
+[5] Analyzer Agent: RAG 근거 기반 조항별 위험 분석
+│   → RAG에서 찾은 실제 법령/판례/표준조항을 컨텍스트로 수신
+│   → 제8조: critical (무제한 손해배상)
+│     ├ reasoning: "민법 제393조에 따르면... 약관규제법 제8조에 의해..."
+│     └ suggested_text: 표준 계약서 조항 기반 수정안
+│   → 제12조: high (일방적 해지권)
+│   → 제15조: medium (과도한 경업금지)
+│   → overall_risk_score: 7.2
 │
 ▼
-[6] Validator Agent: 5단계 검증
+[6] Merger: RAG 매칭 검증 + confidence 보정
+│   → 각 finding이 인용한 법률이 RAG 결과에 있는지 확인
+│   → rag_verified=true → confidence +0.1
+│   → rag_verified=false → confidence -0.15
+│   → 누락 조항에 표준 조항 텍스트 연결
+│
+▼
+[7] Validator Agent: 5단계 검증
 │   ├─ Check 1: original_text 원문 대조 ✅
 │   ├─ Check 2: "민법 제393조" 실존 확인 ✅
 │   ├─ Check 3: "2023다54321" 판례 실존 확인 ✅
 │   ├─ Check 4: 논리적 일관성 (7.2점 & critical 존재 = 일관) ✅
-│   └─ Check 5: GPT-4o-mini 교차 검증 ✅
+│   └─ Check 5: LLM 교차 검증 ✅
 │
 │   → validation: PASSED ✅
 │   → confidence: 0.91
+│   → 실패 시: 문제 조항만 재분석 (전체 X)
 │
 ▼
-[7] 최종 응답 반환
+[8] 최종 응답 반환 (reasoning + rag_verified + rag_law_refs 포함)
 │
 │   {
 │     "overall_risk_score": 7.2,
